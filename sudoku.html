@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	
+	
+	<title>Sudoku</title>
+</head>
+<style>
+	input{
+		padding-top:40px;
+		padding-bottom:40px;
+		width:80px;
+		text-align: center;
+	}
+	#grid{
+		display:flex;
+		flex-wrap:wrap;
+		justify-content:center;
+	}
+	.center{
+		text-align: center;
+		margin:auto
+	}
+	.colonne:nth-child(3n){
+		margin-right: 10px;
+	}
+	.upperMargin{
+		margin-top: 10px;
+	}
+</style>
+<h1 class="center">Sudoku</h1>
+<div id='grid'>
+	<div class='colonne'>	
+		<input id='i00'><br>
+		<input id='i01'><br>
+		<input id='i02'><br>
+		<input id='i03'><br>
+		<input id='i04'><br>
+		<input id='i05'><br>
+		<input id='i06'><br>
+		<input id='i07'><br>
+		<input id='i08'><br>
+	</div>
+	<div class='colonne'>	
+		<input id='i10'><br>
+		<input id='i11'><br>
+		<input id='i12'><br>
+		<input id='i13'><br>
+		<input id='i14'><br>
+		<input id='i15'><br>
+		<input id='i16'><br>
+		<input id='i17'><br>
+		<input id='i18'><br>
+	</div>
+	<div class='colonne'>	
+		<input id='i20'><br>
+		<input id='i21'><br>
+		<input id='i22'><br>
+		<input id='i23'><br>
+		<input id='i24'><br>
+		<input id='i25'><br>
+		<input id='i26'><br>
+		<input id='i27'><br>
+		<input id='i28'><br>
+	</div>
+	<div class='colonne'>	
+		<input id='i30'><br>
+		<input id='i31'><br>
+		<input id='i32'><br>
+		<input id='i33'><br>
+		<input id='i34'><br>
+		<input id='i35'><br>
+		<input id='i36'><br>
+		<input id='i37'><br>
+		<input id='i38'><br>
+	</div>
+	<div class='colonne'>	
+		<input id='i40'><br>
+		<input id='i41'><br>
+		<input id='i42'><br>
+		<input id='i43'><br>
+		<input id='i44'><br>
+		<input id='i45'><br>
+		<input id='i46'><br>
+		<input id='i47'><br>
+		<input id='i48'><br>
+	</div>
+	<div class='colonne'>	
+		<input id='i50'><br>
+		<input id='i51'><br>
+		<input id='i52'><br>
+		<input id='i53'><br>
+		<input id='i54'><br>
+		<input id='i55'><br>
+		<input id='i56'><br>
+		<input id='i57'><br>
+		<input id='i58'><br>
+	</div>
+	<div class='colonne'>	
+		<input id='i60'><br>
+		<input id='i61'><br>
+		<input id='i62'><br>
+		<input id='i63'><br>
+		<input id='i64'><br>
+		<input id='i65'><br>
+		<input id='i66'><br>
+		<input id='i67'><br>
+		<input id='i68'><br>
+	</div>
+	<div class='colonne'>	
+		<input id='i70'><br>
+		<input id='i71'><br>
+		<input id='i72'><br>
+		<input id='i73'><br>
+		<input id='i74'><br>
+		<input id='i75'><br>
+		<input id='i76'><br>
+		<input id='i77'><br>
+		<input id='i78'><br>
+	</div>
+	<div class='colonne'>	
+		<input id='i80'><br>
+		<input id='i81'><br>
+		<input id='i82'><br>
+		<input id='i83'><br>
+		<input id='i84'><br>
+		<input id='i85'><br>
+		<input id='i86'><br>
+		<input id='i87'><br>
+		<input id='i88'><br>
+	</div>
+</div>
+
+<div class="center">
+	<button id="valider">Valider la grille</button>
+</div>
+<script>
+
+	for(let i = 0; i < 9; i++){
+		for(let j = 0; j < 7; j+=3){ //on rajoute une marge au dessus de tous les 3 elements d'une colonne
+			const element = document.querySelector("#i"+i+""+j)
+			element.classList.add("upperMargin")
+		}
+	}
+
+
+
+
+	class Grille{
+		grille = [
+			[0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0],
+		]
+
+		constructor(){
+			//on construit la grille en parcourant tous les inputs
+			for(let i = 0; i < this.grille.length; i++){
+				for(let j = 0; j < this.grille[0].length; j++){
+					console.log(i,j , document.querySelector("#i"+i+""+j))
+					const nombreEntree = document.querySelector("#i"+i+""+j).value
+					if (isNaN(parseFloat(nombreEntree))){
+						this.grille[i][j] = 0
+					}
+					else{
+						this.grille[i][j] = parseFloat(nombreEntree)
+					}
+				}
+			}
+
+			this.isvalid(this.grille, 0)
+		}
+
+
+		passurBlock(numch, x, y){//regarde si un nombre est présent dans le block 3x3,
+			let repx = x - (x%3)					//0 pour les indice 0 1 2 .  1 pour les indices 3 4 5, 2 pour les indices 6 7 8. 
+			let repy = y - (y%3)
+			for(x = repx; x < repx+3 ;x++){
+				for(y=repy; y < repy+3 ;y++){
+					if(numch === this.grille[x][y]){
+						return(false)
+					}
+				}
+			}
+			return(true)
+		}
+
+		passurLigne(numch,  ligne){//regarde si un nombre cherché numch est présent dans la grille à la ligne indiquée
+			
+			for (let j = 0; j < 9; j++){
+				if(numch === this.grille[ligne][j]){
+					return (false)
+				}
+			}
+			return(true)
+
+		}
+
+		passurCol(numch,  indiceco){//regarde si un nombre cherché numch est présent dans la grille à la colonne indiquée
+			for (let j = 0; j<9; j++){
+				if(numch === this.grille[j][indiceco]){
+					return(false)
+				}
+			}
+			return(true)
+		}
+
+
+
+		isvalid(grille, position){ // la fonction qui fait tout
+			if(position >= 81){			//si l'indice dépace le tableau on affiche la grille et return	
+				this.displayp()
+				return(true)
+			}
+
+			let x = Math.floor(position/9) 
+			let y = position%9
+			let k=0
+
+			if(this.grille[x][y] !== 0){ // si il y a déjà un nombre on passe au suivant
+				return(this.isvalid(grille,position+1))
+			}
+			
+			for(k=1;k<=9;k++){
+				if (this.passurBlock(k, x, y) && this.passurCol(k, y) && this.passurLigne(k, x)){ //si le nombre est nulle part et que la position suivante marche par reccurence
+					this.grille[x][y] = k																	//alors on met le nombre dans la grille
+					if (this.isvalid(grille, position+1)){
+						return (true)																	//et c'est fini
+					}
+				}
+			}
+			
+			this.grille[x][y] = 0																		//sinon on remet l'indice à 0 pour les noeuds suivant
+			return(false)																			//bloque les isvalide+1 et fait un retour au noeud précédent
+		}
+
+		displayp(){
+			//on place tous les indices de la grille calculé dans celle affichée
+			for(let i = 0; i < this.grille.length; i++){
+				for(let j = 0; j < this.grille[0].length; j++){
+					document.querySelector("#i"+i+""+j).value = this.grille[i][j] 
+				}
+			}
+		}
+	}
+
+	document.querySelector("#valider").addEventListener("click", ()=>{
+		const GRILLE = new Grille()
+	})
+</script>
+</body>
+</html>
